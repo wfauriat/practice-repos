@@ -1,1 +1,5 @@
-"""Report generation — to be implemented in Part 3."""
+"""Report generation from audit results."""
+
+from agentprobe.report.generator import ReportGenerator
+
+__all__ = ["ReportGenerator"]

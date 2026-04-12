@@ -240,8 +240,9 @@ def run(ctx: click.Context, probes: str, corpus: str, output: str | None, concur
 @main.command()
 @click.argument("run_id")
 @click.option("--dir", "report_dir", default="./reports", help="Directory containing run JSON files")
+@click.option("--format", "fmt", default=None, help="Report format: 'html' or 'markdown' (default: from config)")
 @click.pass_context
-def report(ctx: click.Context, run_id: str, report_dir: str) -> None:
+def report(ctx: click.Context, run_id: str, report_dir: str, fmt: str | None) -> None:
     """Generate a report from a previous audit run."""
     path = Path(report_dir) / f"{run_id}.json"
     if not path.exists():
@@ -249,9 +250,18 @@ def report(ctx: click.Context, run_id: str, report_dir: str) -> None:
         sys.exit(1)
 
     from agentprobe.auditor.auditor import AuditRun
+    from agentprobe.report.generator import ReportGenerator
 
+    cfg = ctx.obj["config"]
     audit = AuditRun.load(path)
+    fmt = fmt or cfg.get("output", {}).get("report_format", "html")
+    thresholds = cfg.get("thresholds", {})
+
+    generator = ReportGenerator(thresholds=thresholds)
+    report_path = generator.write(audit, report_dir, fmt=fmt)
+
     click.echo(f"Loaded run {audit.run_id} ({len(audit.probe_results)} probes)")
+    click.echo(f"Report written to {report_path}")
     for line in audit.metrics.summary_lines():
         click.echo(f"  {line}")
 
