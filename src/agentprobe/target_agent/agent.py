@@ -88,7 +88,7 @@ class TargetAgent:
             messages = self._append_assistant_turn(messages, resp)
             for tc in resp.tool_calls:
                 result = self._tools.execute(tc.name, tc.arguments)
-                tool_log.append({"tool": tc.name, "args": tc.arguments, "result_length": len(result)})
+                tool_log.append({"tool": tc.name, "args": tc.arguments, "result": result})
                 messages = self._append_tool_result(messages, tc.id, result)
 
         # Max turns exceeded — return whatever we have
