@@ -24,9 +24,8 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 
-# Configure API key
+# Configure API key (auto-loaded from .env via python-dotenv)
 echo 'ANTHROPIC_API_KEY="sk-ant-..."' > .env
-source .env && export ANTHROPIC_API_KEY
 ```
 
 Requires Python 3.11+.

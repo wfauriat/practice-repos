@@ -53,10 +53,15 @@ class DocumentChunker:
     def chunk_text(self, text: str, *, doc_id: str, metadata: dict | None = None) -> list[Chunk]:
         """Split *text* into overlapping chunks."""
         metadata = metadata or {}
+        title = metadata.get("title", doc_id)
         paragraphs = self._split_paragraphs(text)
         raw_chunks = self._merge_paragraphs(paragraphs)
         chunks: list[Chunk] = []
         for idx, raw in enumerate(raw_chunks):
+            # Prepend document context to chunks that don't mention the title,
+            # so every chunk is retrievable by document name.
+            if idx > 0 and title.lower() not in raw.lower():
+                raw = f"[Source: {title}]\n\n{raw}"
             chunk_id = self._make_id(doc_id, idx)
             chunks.append(
                 Chunk(

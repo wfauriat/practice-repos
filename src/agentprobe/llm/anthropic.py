@@ -13,7 +13,7 @@ class AnthropicProvider(LLMProvider):
     """LLM provider backed by the Anthropic Messages API."""
 
     def __init__(self, model: str = "claude-sonnet-4-20250514", max_tokens: int = 4096):
-        self._client = AsyncAnthropic()
+        self._client = AsyncAnthropic(max_retries=5)
         self._model = model
         self._max_tokens = max_tokens
 

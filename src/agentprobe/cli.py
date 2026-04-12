@@ -9,6 +9,9 @@ import tomllib
 from pathlib import Path
 
 import click
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def _load_config(path: str | Path) -> dict:

@@ -153,15 +153,41 @@ class HallucinationChecker:
     # Helpers
     # ------------------------------------------------------------------
 
+    # Patterns that are not factual claims about the corpus
+    _NON_CLAIM_PATTERNS = re.compile(
+        r"(?i)"
+        r"(?:based on (?:the|my) (?:search|retrieved))"
+        r"|(?:I (?:don'?t know|was unable|cannot|could not|can provide|found the))"
+        r"|(?:the (?:available |retrieved )?documentation (?:does not|focuses|I found|provides))"
+        r"|(?:the documents? I (?:found|searched))"
+        r"|(?:let me search)"
+        r"|(?:here (?:is|are) (?:the|what))"
+        r"|(?:the search results (?:show|contain|indicate|do not))"
+        r"|(?:you would need to (?:obtain|consult|check|refer))"
+        r"|(?:to make this comparison)"
+        r"|(?:\*{0,2}sources?\*{0,2}\s*:)"
+    )
+
     @staticmethod
     def _split_claims(text: str) -> list[str]:
-        """Split an answer into individual claim-bearing sentences."""
-        # Remove source citations section
-        text = re.split(r"\n\s*sources?\s*:", text, flags=re.IGNORECASE)[0]
+        """Split an answer into individual claim-bearing sentences.
+
+        Filters out refusal phrases and meta-commentary that are not
+        factual claims about the corpus.
+        """
+        # Remove source citations section (handles **Sources:** markdown formatting)
+        text = re.split(r"\n\s*\*{0,2}sources?\*{0,2}\s*:", text, flags=re.IGNORECASE)[0]
         # Split on sentence boundaries
         sentences = re.split(r"(?<=[.!?])\s+", text.strip())
-        # Filter out very short or non-claim sentences
-        claims = [s.strip() for s in sentences if len(s.strip()) > 20]
+        # Filter out very short, non-claim, or meta-commentary sentences
+        claims: list[str] = []
+        for s in sentences:
+            s = s.strip()
+            if len(s) <= 20:
+                continue
+            if HallucinationChecker._NON_CLAIM_PATTERNS.search(s):
+                continue
+            claims.append(s)
         return claims
 
     @staticmethod

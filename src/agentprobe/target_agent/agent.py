@@ -86,10 +86,12 @@ class TargetAgent:
 
             # Execute every tool call and feed results back
             messages = self._append_assistant_turn(messages, resp)
+            tool_results: list[tuple[str, str]] = []
             for tc in resp.tool_calls:
                 result = self._tools.execute(tc.name, tc.arguments)
                 tool_log.append({"tool": tc.name, "args": tc.arguments, "result": result})
-                messages = self._append_tool_result(messages, tc.id, result)
+                tool_results.append((tc.id, result))
+            messages = self._append_tool_results(messages, tool_results)
 
         # Max turns exceeded — return whatever we have
         elapsed = (time.perf_counter() - t0) * 1000
@@ -144,16 +146,25 @@ class TargetAgent:
             messages.append(msg)
         return messages
 
-    def _append_tool_result(self, messages: list[dict], tool_call_id: str, result: str) -> list[dict]:
-        """Append a tool result to the conversation history."""
-        if self._provider_type == "anthropic":
-            from agentprobe.llm.anthropic import AnthropicProvider
+    def _append_tool_results(self, messages: list[dict], results: list[tuple[str, str]]) -> list[dict]:
+        """Append tool results to the conversation history.
 
-            messages.append(AnthropicProvider.tool_result_message(tool_call_id, result))
+        For Anthropic, all results go in a single user message.
+        For OpenAI, each result is a separate tool message.
+        """
+        if self._provider_type == "anthropic":
+            messages.append({
+                "role": "user",
+                "content": [
+                    {"type": "tool_result", "tool_use_id": tid, "content": res}
+                    for tid, res in results
+                ],
+            })
         else:
             from agentprobe.llm.openai import OpenAIProvider
 
-            messages.append(OpenAIProvider.tool_result_message(tool_call_id, result))
+            for tid, res in results:
+                messages.append(OpenAIProvider.tool_result_message(tid, res))
         return messages
 
     # ------------------------------------------------------------------

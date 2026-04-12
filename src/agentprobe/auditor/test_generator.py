@@ -64,8 +64,9 @@ class TestGenerator:
                     p1_probes = await self._generate_p1()
                 probes.extend(await self._generate_p6(p1_probes))
             elif cat == ProbeCategory.P7_CERTAINTY:
-                source = p1_probes or probes
-                probes.extend(await self._generate_p7(source))
+                if not p1_probes:
+                    p1_probes = await self._generate_p1()
+                probes.extend(await self._generate_p7(p1_probes))
 
         return probes
 
