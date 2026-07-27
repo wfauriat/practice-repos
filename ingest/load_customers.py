@@ -1,5 +1,6 @@
 import csv
 import argparse
+import logging
 import sqlite3
 from contextlib import closing
 from datetime import datetime, timezone
@@ -11,7 +12,12 @@ parser.add_argument("--src", help="path to the source file", required=True)
 
 DATA_ROOT = Path(__file__).resolve().parents[1] / "data"
 
+log = logging.getLogger(__name__)
+
 def main(argv=None):
+    logging.basicConfig(
+        level=logging.INFO, 
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     args = parser.parse_args(argv)
     _src_file = str(Path(args.src).resolve().relative_to(DATA_ROOT))
 
@@ -24,15 +30,16 @@ def main(argv=None):
 
         if reader.fieldnames != list(FIELDS):
             raise ValueError(
-                f"unexpected header in {args.src}: {reader.fieldnames}")
+                f"unexpected header in {_src_file}: {reader.fieldnames}")
 
-        rows = ([row[k] for k in FIELDS] + [args.src, i, currtime]
+        rows = ([row[k] for k in FIELDS] + [_src_file, i, currtime]
             for i, row in enumerate(reader, start=2))
         sql = (f"INSERT INTO raw_customers ({', '.join(ALL_COLS)}) "
                f"VALUES ({', '.join('?' * len(ALL_COLS))})")
         with conn:
             cur = conn.executemany(sql, rows)
-        print(f"loaded {cur.rowcount} rows from {args.src}")
+        log.info("loaded %d rows from %s into %s",
+                  cur.rowcount, _src_file, args.db)
 
 if __name__ == "__main__":
     main()
