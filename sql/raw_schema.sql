@@ -1,6 +1,4 @@
-DROP TABLE IF EXISTS raw_customers;
-
-CREATE TABLE raw_customers (
+CREATE TABLE IF NOT EXISTS raw_customers (
     customer_id TEXT,
     signup_date TEXT,
     country     TEXT, 

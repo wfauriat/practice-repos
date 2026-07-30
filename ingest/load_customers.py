@@ -6,11 +6,14 @@ from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+SCHEMA = REPO_ROOT / "sql" / "raw_schema.sql"
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--db", help="path to the write db", required=True)
 parser.add_argument("--src", help="path to the source file", required=True)
-
-DATA_ROOT = Path(__file__).resolve().parents[1] / "data"
+parser.add_argument("--init-db", help="init the db from schema",
+                    action="store_true", default=False)
 
 log = logging.getLogger(__name__)
 
@@ -19,10 +22,23 @@ def main(argv=None):
         level=logging.INFO, 
         format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     args = parser.parse_args(argv)
-    _src_file = str(Path(args.src).resolve().relative_to(DATA_ROOT))
-
+    _src_file = Path(args.src).resolve().name
+                   
     currtime = datetime.now(timezone.utc).isoformat()
-    with closing(sqlite3.connect(args.db)) as conn, open(args.src) as f:
+    with (
+        open(args.src, newline='', encoding='utf-8-sig') as f,
+        closing(sqlite3.connect(args.db)) as conn,
+    ):
+        if args.init_db:
+            with open(SCHEMA, newline='') as g:
+                conn.executescript(g.read())
+        cur = conn.cursor()
+        cur.execute("SELECT name FROM sqlite_master "
+                    "WHERE type='table' AND name='raw_customers';")
+        if cur.fetchone() is None:
+            raise RuntimeError((f"raw_customers tables not in {args.db}. "
+            f"Run load_customers with --init-db"))
+
         reader = csv.DictReader(f)
         FIELDS = ("customer_id", "signup_date", "country", "city",
             "segment", "lifetime_value_cents", "is_active")
