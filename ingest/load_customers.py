@@ -30,14 +30,15 @@ def main(argv=None):
         closing(sqlite3.connect(args.db)) as conn,
     ):
         if args.init_db:
-            with open(SCHEMA, newline='') as g:
-                conn.executescript(g.read())
-        cur = conn.cursor()
-        cur.execute("SELECT name FROM sqlite_master "
-                    "WHERE type='table' AND name='raw_customers';")
-        if cur.fetchone() is None:
-            raise RuntimeError((f"raw_customers tables not in {args.db}. "
-            f"Run load_customers with --init-db"))
+            conn.executescript(SCHEMA.read_text(encoding="utf-8"))
+
+        exists = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='raw_customers'"
+        ).fetchone()
+        if exists is None:
+            raise RuntimeError(
+                f"table raw_customers missing in {args.db} — rerun with --init-db"
+    )
 
         reader = csv.DictReader(f)
         FIELDS = ("customer_id", "signup_date", "country", "city",
