@@ -1,0 +1,13 @@
+{
+    "editor.quickSuggestions": {
+        "other":"off",
+        "comments":"off",
+        "strings":"off"
+    },
+    "editor.suggestOnTriggerCharacters":false,
+    "editor.parameterHints.enabled":true,
+    "editor.wordBasedSuggestions":"off",
+    "python.analysis.autoImportCompletions":false,
+    "python.analysis.typeCheckingMode":"basic",
+    "editor.rulers": [80]
+}

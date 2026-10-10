@@ -1,0 +1,65 @@
+{
+  "React functional component": {
+    "prefix": "rfc",
+    "body": [
+      "interface ${1:Name}Props {",
+      "    ${2:// props}",
+      "}",
+      "",
+      "export function ${1:Name}({ ${3} }: ${1:Name}Props) {",
+      "    return (",
+      "        <div>${4:body}</div>",
+      "    );",
+      "}"
+    ],
+    "description": "React function component with typed props."
+  },
+  "React hook": {
+    "prefix": "rhook",
+    "body": [
+      "import { useState } from \"react\";",
+      "",
+      "export function use${1:Name}(${2:initial}: ${3:T}) {",
+      "    const [state, setState] = useState(${2});",
+      "    return { state, setState };",
+      "}"
+    ],
+    "description": "Custom React hook scaffold."
+  },
+  "Vitest describe/test": {
+    "prefix": "vtest",
+    "body": [
+      "import { describe, expect, test } from \"vitest\";",
+      "",
+      "describe(\"${1:thing}\", () => {",
+      "    test(\"${2:behaviour}\", () => {",
+      "        expect(${3:actual}).toBe(${4:expected});",
+      "    });",
+      "});"
+    ],
+    "description": "Vitest test scaffold."
+  },
+  "console.log with marker": {
+    "prefix": "cl",
+    "body": "console.log(\"🟡 ${1:label}:\", ${2:value});",
+    "description": "console.log with a coloured marker emoji to grep out later."
+  },
+  "Zod schema": {
+    "prefix": "zod",
+    "body": [
+      "import { z } from \"zod\";",
+      "",
+      "export const ${1:Name} = z.object({",
+      "    ${2:field}: z.${3:string}(),",
+      "});",
+      "",
+      "export type ${1:Name} = z.infer<typeof ${1:Name}>;"
+    ],
+    "description": "Zod schema + inferred type."
+  },
+  "TUTOR marker": {
+    "prefix": "tutor",
+    "body": "// TUTOR: ${1:hint}",
+    "description": "Mark a blank for the fill-in-the-blanks tutorial protocol."
+  }
+}

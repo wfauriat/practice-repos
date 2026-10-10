@@ -1,0 +1,25 @@
+default:
+    @just --list
+
+install:
+    python -m venv .venv
+    .venv/bin/pip install -r requirements-dev.txt
+    .venv/bin/pip install -e .
+
+test:
+    .venv/bin/pytest -v
+
+lint:
+    .venv/bin/ruff check src tests
+    .venv/bin/ruff format --check src tests
+
+fmt:
+    .venv/bin/ruff format src tests
+    .venv/bin/ruff check --fix src tests
+
+# Run the CLI with arbitrary args. Usage: just run -- add "buy milk"
+run *ARGS:
+    .venv/bin/python -m mycli {{ARGS}}
+
+freeze:
+    .venv/bin/pip freeze > requirements.lock.txt
