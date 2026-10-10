@@ -1,0 +1,11 @@
+id,name,email,country,signup_date
+1,Ada Lovelace,ada@example.com,UK,2024-01-12
+2,Alan Turing,alan@example.com,UK,2024-02-03
+3,Grace Hopper,grace@example.com,US,2024-02-19
+4,Edsger Dijkstra,edsger@example.com,NL,2024-03-08
+5,Donald Knuth,knuth@example.com,US,2024-03-22
+6,Barbara Liskov,barbara@example.com,US,2024-04-01
+7,Tim Berners-Lee,tim@example.com,UK,2024-04-15
+8,Linus Torvalds,linus@example.com,FI,2024-05-02
+9,Margaret Hamilton,margaret@example.com,US,2024-05-19
+10,Brian Kernighan,bwk@example.com,CA,2024-06-04

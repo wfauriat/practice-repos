@@ -1,0 +1,29 @@
+default:
+    @just --list
+
+install:
+    python -m venv .venv
+    .venv/bin/pip install -r requirements-dev.txt
+
+dev:
+    .venv/bin/uvicorn app.main:app --reload
+
+test:
+    .venv/bin/pytest -v
+
+lint:
+    .venv/bin/ruff check app tests
+    .venv/bin/ruff format --check app tests
+
+fmt:
+    .venv/bin/ruff format app tests
+    .venv/bin/ruff check --fix app tests
+
+freeze:
+    .venv/bin/pip freeze > requirements.lock.txt
+
+build-docker:
+    docker build -t python-fastapi-crud .
+
+run-docker: build-docker
+    docker run --rm -p 8000:8000 python-fastapi-crud
