@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+*.egg
+build/
+dist/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.lock.txt.tmp
+
+# Jupyter
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# Node / TS
+node_modules/
+.pnpm-store/
+.turbo/
+.next/
+.svelte-kit/
+.vite/
+.cache/
+*.tsbuildinfo
+
+# Build output
+dist/
+out/
+build/
+*.min.js
+*.min.css
+
+# Databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json.example
+!.vscode/extensions.json
+*.swp
+*~
+
+# Env files (NEVER commit secrets)
+.env
+.env.*
+!.env.example
+
+# Repo-specific
+craft/git/_sandbox/
+craft/docker/_sandbox/

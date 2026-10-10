@@ -1,0 +1,8 @@
+services:
+  ts-node-api:
+    build: .
+    image: ts-node-api
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000

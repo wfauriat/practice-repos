@@ -1,0 +1,20 @@
+default:
+    @just --list
+
+install:
+    pnpm install
+
+dev:
+    pnpm dev
+
+test:
+    pnpm test:run
+
+build:
+    pnpm build
+
+build-docker:
+    docker build -t ts-node-api .
+
+run-docker: build-docker
+    docker run --rm -p 3000:3000 ts-node-api
