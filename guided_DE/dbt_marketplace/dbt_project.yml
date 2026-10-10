@@ -1,0 +1,15 @@
+name: dbt_marketplace
+version: "1.0.0"
+profile: dbt_marketplace
+
+model-paths: ["models"]
+
+models:
+  dbt_marketplace:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+vars:
+  session_gap_days: 7     # a new session starts when a user's gap since their previous event exceeds this (days)
