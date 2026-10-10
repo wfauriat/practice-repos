@@ -1,0 +1,1 @@
+alias bt='/home/ai-user/Documents/Sandbox/practiceDS/recon/bash_practice.sh'
