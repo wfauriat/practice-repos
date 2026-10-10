@@ -1,0 +1,20 @@
+[
+  {"ts": "2026-05-05T08:00:01Z", "user": "alice", "event": "page_view", "path": "/home", "duration_ms": 120},
+  {"ts": "2026-05-05T08:00:14Z", "user": "alice", "event": "click", "path": "/home", "target": "signup"},
+  {"ts": "2026-05-05T08:00:22Z", "user": "alice", "event": "page_view", "path": "/signup", "duration_ms": 380},
+  {"ts": "2026-05-05T08:01:03Z", "user": "bob", "event": "page_view", "path": "/home", "duration_ms": 80},
+  {"ts": "2026-05-05T08:01:08Z", "user": "bob", "event": "click", "path": "/home", "target": "login"},
+  {"ts": "2026-05-05T08:01:17Z", "user": "bob", "event": "page_view", "path": "/login", "duration_ms": 250},
+  {"ts": "2026-05-05T08:01:42Z", "user": "bob", "event": "form_submit", "path": "/login", "form": "login"},
+  {"ts": "2026-05-05T08:01:48Z", "user": "bob", "event": "page_view", "path": "/dashboard", "duration_ms": 1100},
+  {"ts": "2026-05-05T08:02:00Z", "user": "carol", "event": "page_view", "path": "/home", "duration_ms": 60},
+  {"ts": "2026-05-05T08:02:15Z", "user": "alice", "event": "form_submit", "path": "/signup", "form": "signup"},
+  {"ts": "2026-05-05T08:02:30Z", "user": "alice", "event": "page_view", "path": "/dashboard", "duration_ms": 940},
+  {"ts": "2026-05-05T08:03:11Z", "user": "carol", "event": "click", "path": "/home", "target": "pricing"},
+  {"ts": "2026-05-05T08:03:14Z", "user": "carol", "event": "page_view", "path": "/pricing", "duration_ms": 720},
+  {"ts": "2026-05-05T08:03:55Z", "user": "carol", "event": "page_view", "path": "/home", "duration_ms": 30},
+  {"ts": "2026-05-05T08:05:01Z", "user": "alice", "event": "click", "path": "/dashboard", "target": "logout"},
+  {"ts": "2026-05-05T08:05:03Z", "user": "alice", "event": "page_view", "path": "/home", "duration_ms": 50},
+  {"ts": "2026-05-05T08:06:14Z", "user": "dave", "event": "page_view", "path": "/home", "duration_ms": 200},
+  {"ts": "2026-05-05T08:06:19Z", "user": "dave", "event": "page_view", "path": "/pricing", "duration_ms": 480}
+]
